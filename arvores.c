@@ -209,7 +209,7 @@ void caso2(nodo **pt, int *alterado){
 	//printf("Teste 2 saiu\n");
 }
 
-void insereAVL(int x, nodo **pt, int *alterado) {
+void insereA2VL(int x, nodo **pt, int *alterado) {
 	if (*pt == NULL) {
 		iniciano(x, pt);
 		*alterado = 1;

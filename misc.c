@@ -9,6 +9,39 @@
 #include <time.h>
 #include "misc.h"
 
+int compara(int *a, int *b) {
+	if (*a < *b) return -1;
+	else if (*a==*b) return 0;
+	else return 1;
+}
+
+int ordenalista(int tam) {
+	FILE *entrada, *saida;
+	int i;
+	int a[MAXLISTA];
+	
+	if (tam > MAXLISTA) tam = MAXLISTA;
+	
+	entrada = fopen("lista.txt", "r");
+	saida = fopen("listaordenada.txt", "w");
+	
+	for (i = 0; i< tam; i++) {
+		fscanf(entrada, "%d", &a[i]);
+	}
+	
+	qsort(a, tam, sizeof(int), compara);
+	
+	for (i = 0; i< tam; i++) {
+		fprintf(saida, "%d\n", a[i]);
+	}
+	
+	fclose(entrada);
+	fclose(saida);
+	return 0;
+}
+	
+	
+
 int geralista(int tam) {
 	
 	FILE *file;
