@@ -18,8 +18,8 @@ int main() {
 	long t_i, t_f;
 	clock_t ct_i, ct_f;
 	
-	nodo *ptaux;
-	nodo *arvore = NULL;
+	nodo *ptaux, *ptaux2;
+	nodo *arvore = NULL, *arvore2 =NULL;
 	int alterado=0;
 	
 	// Abre os arquivos, um para a leitura e outra para a escrita
@@ -62,15 +62,8 @@ int main() {
 	
 	//simet(arvore);
 	ptaux = arvore;
-	/*printf("Posição 0: %d\n", buscabinaria(a[0], &ptaux));
-	printf("Memoria: %d\n",  (int)ptaux);
-	ptaux = arvore;
-	printf("Posição 1000; %d\n", buscabinaria(a[1000], &ptaux));
-	printf("Memoria: %d\n",  (int)ptaux);
-	ptaux = arvore;
-	printf("Valor 3; %d\n", buscabinaria(3, &ptaux));
-	printf("Memoria: %d\n",  (int)ptaux);
-*/
+	
+
 	
 	calculaalturas(arvore);
 	
@@ -79,9 +72,47 @@ int main() {
 	printf("A altura da árvore é %d \n", arvore->altura);
 	
 	// Escreve a diferença da tela
-	printf("Levou %ld segundos para operar a árvore com %d elementos.\n", t_f - t_i, n);
 	printf("Levou %lf segundos para operar a árvore com %d elementos.\n", ((float)(ct_f - ct_i) / CLOCKS_PER_SEC), n);
 		
+	printf("Começando a criar...\n");
+		
+	t_i = time(NULL);
+	ct_i = clock();
+	
+	ptaux2 = arvore2;
+	
+	n = 0;
+	
+	for (i=0; i<MAXLISTA; i++) {
+		ptaux2 = arvore2;
+		if (buscabinaria(a[i], &ptaux2) != 1) {
+			insereAVL(a[i], &arvore2, &alterado);
+			n++;
+		}
+	}
+	
+	printf("%d\n", n);
+		
+	
+	ct_f = clock();
+	// Tempo depois da operação
+	t_f = time(NULL);
+	
+	printf("Árvore binária balanceada construída!\n");
+	
+	//simet(arvore);
+	ptaux2 = arvore2;
+	
+
+	
+	calculaalturas(arvore2);
+	
+	//simet(arvore);
+	
+	printf("A altura da árvore balanceada é %d \n", arvore2->altura);
+	
+	// Escreve a diferença da tela
+	printf("Levou %lf segundos para operar a árvore balanceada com %d elementos.\n", ((float)(ct_f - ct_i) / CLOCKS_PER_SEC), n);
 	// Fecha os arquivos
 	fclose(file);
 	
