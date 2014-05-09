@@ -88,8 +88,9 @@ int main() {
 	n = 0;
 	
 	nodo *raiz, *noatual, *nopai, *noavo;
-	alterado = 0;
+	
 	raiz = NULL;
+	alterado = 1;
 	
 	for (i=0; i<MAXLISTA; i++) {
 		noatual = NULL;
@@ -134,7 +135,7 @@ int main() {
 	
 	//Zerando árvore
 	nodo *raiz2; 
-	alterado = 0;
+	alterado = 1;
 	
 	raiz2 = NULL;
 	
@@ -142,6 +143,7 @@ int main() {
 		noatual = NULL;
 		nopai = NULL;
 		noavo = NULL;
+		alterado = 1;
 		
 		if (insereRN(a[i], &raiz2, &raiz2, &nopai, &noavo, &alterado) == 0) n++;
 		//printf("%d\n", n);

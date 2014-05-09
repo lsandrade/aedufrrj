@@ -258,7 +258,7 @@ void rotaRN(nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, nodo **pt
 			*a = 0;
 		} else { // Caso 2.2
 			(*ptavo)->balanco = 1;
-			if (*ptatual == (*ptavo)->esq) {
+			if (*ptatual == (*ptpai)->esq) {
 				if (*ptpai == (*ptavo)->esq) { // Caso 2.2.1
 					ptaux = *ptpai;
 					(*ptpai)->balanco = 1;
@@ -307,7 +307,7 @@ int insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, i
 		iniciano(x, ptatual);
 		if (*ptraiz == *ptatual) {//NULL) {
 			//printf("Criando raiz\n");
-			(*ptatual)->balanco = 1;
+			(*ptatual)->balanco = 1;  //1 é negro
 			*ptraiz = *ptatual;
 		} else if (x < (*ptpai)->chave) {
 			//printf("Colocando filho esquerdo\n");
@@ -324,8 +324,9 @@ int insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, i
 		}
 		//printf("Recursão\n");
 		ret = insereRN(x, ptraiz, &ptnovo, ptatual, ptpai, a);
-		//printf("Voltanda da recursão\n");
+		//printf("Voltando da recursão\n");
 		if (*a==1) { 
+			printf("Rotacionando\n");
 			rotaRN(ptraiz, &ptnovo, ptatual, ptpai, ptavo, a);
 		} else if (*a==0) { 
 			*a = 1;
