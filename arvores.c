@@ -242,6 +242,99 @@ void insereAVL(int x, nodo **pt, int *alterado) {
 		}
 	}
 }
+void rotaRN(nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, nodo **ptbisavo, int *a) {
+	nodo *ptaux, *pttio;
+	
+	*a = 2;
+	
+	if ((*ptpai)->balanco == 0) {
+		if (*ptpai == (*ptavo)->esq) {
+			pttio = (*ptavo)->dir;
+		} else pttio = (*ptavo)->esq;
+		if (pttio->balanco == 0) { // Caso 2.1
+			(*ptpai)->balanco = 1;
+			(*ptavo)->balanco = 0;
+			pttio->balanco = 1;
+			*a = 0;
+		} else { // Caso 2.2
+			(*ptavo)->balanco = 1;
+			if (*ptatual == (*ptavo)->esq) {
+				if (*ptpai == (*ptavo)->esq) { // Caso 2.2.1
+					ptaux = *ptpai;
+					(*ptpai)->balanco = 1;
+					(*ptavo)->esq = (*ptpai)->dir;
+					(*ptpai)->dir = *ptavo;
+				} else { //Caso 2.2.2
+					ptaux = *ptatual;
+					(*ptatual)->balanco = 1;
+					(*ptavo)->dir = (*ptatual)->esq;
+					(*ptpai)->esq = (*ptatual)->dir;
+					(*ptatual)->esq = *ptavo;
+					(*ptatual)->dir = *ptpai;
+				} 
+			} else {
+				if (*ptpai == (*ptavo)->dir) { // Caso 2.2.3
+					ptaux = *ptpai;
+					(*ptpai)->balanco = 1;
+					(*ptavo)->dir = (*ptpai)->esq;
+					(*ptpai)->esq = *ptavo;
+				} else { //Caso 2.2.4
+					ptaux = *ptatual;
+					(*ptatual)->balanco = 1;
+					(*ptavo)->esq = (*ptatual)->dir;
+					(*ptpai)->dir = (*ptatual)->esq;
+					(*ptatual)->dir = *ptavo;
+					(*ptatual)->esq = *ptpai;
+				} 
+			}
+			if (*ptbisavo == NULL) {
+				if ((*ptatual)->chave < (*ptbisavo)->chave) {
+					(*ptbisavo)->esq = ptaux;
+				} else (*ptbisavo)->dir = ptaux;
+			} else *ptraiz = ptaux;
+		}
+	}
+	(*ptraiz)->balanco = 1;
+}
+
+
+// o campo balanço é 0 se vermelho e 1 se preto
+void insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, int *a) {
+	nodo *ptnovo;
+	
+	if (*ptatual == NULL) {
+		iniciano(x, ptatual);
+		if (*ptraiz == *ptatual) {//NULL) {
+			printf("Criando raiz\n");
+			(*ptatual)->balanco = 1;
+			*ptraiz = *ptatual;
+		} else if (x < (*ptpai)->chave) {
+			printf("Colocando filho esquerdo\n");
+			(*ptpai)->esq = *ptatual;
+		} else {
+			printf("Colocando filho direito\n");
+			(*ptpai)->dir = *ptatual;
+		}
+	} else if (x != (*ptatual)->chave) {
+		if ( x < (*ptatual)->chave ) {
+			ptnovo = (*ptatual)->esq;
+		} else {
+			ptnovo = (*ptatual)->dir;
+		}
+		printf("Recursão\n");
+		insereRN(x, ptraiz, &ptnovo, ptatual, ptpai, a);
+		printf("Voltanda da recursão\n");
+		if (*a==1) { 
+			rotaRN(ptraiz, &ptnovo, ptatual, ptpai, ptavo, a);
+		} else if (*a==0) { 
+			*a = 1;
+		}
+	} else printf("Inserção Inválida");
+}
+		
+		
+		
+
 
 
 	

@@ -40,5 +40,7 @@ void caso2(nodo **pt, int *alterado);
 
 void insereAVL(int x, nodo **pt, int *alterado);
 
+void rotaRN(nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, nodo **ptbisavo, int *a);
 
+void insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, int *a);
 	
