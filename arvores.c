@@ -307,7 +307,7 @@ int insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, i
 		iniciano(x, ptatual);
 		if (*ptraiz == *ptatual) {//NULL) {
 			//printf("Criando raiz\n");
-			(*ptatual)->balanco = 1;
+			(*ptatual)->balanco = 1; //O valor 1 é referente a cor (1 NEGRO e 0 RUBRO)
 			*ptraiz = *ptatual;
 		} else if (x < (*ptpai)->chave) {
 			//printf("Colocando filho esquerdo\n");
@@ -325,7 +325,7 @@ int insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, i
 		//printf("Recursão\n");
 		ret = insereRN(x, ptraiz, &ptnovo, ptatual, ptpai, a);
 		//printf("Voltanda da recursão\n");
-		if (*a==1) { 
+		if (*a==1) {  //O valor 1 é referente ao balanço da árvore (1 desbalanceada e 0 balanceada)
 			rotaRN(ptraiz, &ptnovo, ptatual, ptpai, ptavo, a);
 		} else if (*a==0) { 
 			*a = 1;
