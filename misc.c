@@ -62,3 +62,4 @@ int geralista(int tam) {
 	fclose(file);
 	return 0;
 }
+

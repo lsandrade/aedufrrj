@@ -209,7 +209,7 @@ void caso2(nodo **pt, int *alterado){
 	//printf("Teste 2 saiu\n");
 }
 
-void insereA2VL(int x, nodo **pt, int *alterado) {
+void insereAVL(int x, nodo **pt, int *alterado) {
 	if (*pt == NULL) {
 		iniciano(x, pt);
 		*alterado = 1;
@@ -299,20 +299,21 @@ void rotaRN(nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, nodo **pt
 
 
 // o campo balanço é 0 se vermelho e 1 se preto
-void insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, int *a) {
+int insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, int *a) {
 	nodo *ptnovo;
+	int ret = 0;
 	
 	if (*ptatual == NULL) {
 		iniciano(x, ptatual);
 		if (*ptraiz == *ptatual) {//NULL) {
-			printf("Criando raiz\n");
+			//printf("Criando raiz\n");
 			(*ptatual)->balanco = 1;
 			*ptraiz = *ptatual;
 		} else if (x < (*ptpai)->chave) {
-			printf("Colocando filho esquerdo\n");
+			//printf("Colocando filho esquerdo\n");
 			(*ptpai)->esq = *ptatual;
 		} else {
-			printf("Colocando filho direito\n");
+			//printf("Colocando filho direito\n");
 			(*ptpai)->dir = *ptatual;
 		}
 	} else if (x != (*ptatual)->chave) {
@@ -321,15 +322,16 @@ void insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, 
 		} else {
 			ptnovo = (*ptatual)->dir;
 		}
-		printf("Recursão\n");
-		insereRN(x, ptraiz, &ptnovo, ptatual, ptpai, a);
-		printf("Voltanda da recursão\n");
+		//printf("Recursão\n");
+		ret = insereRN(x, ptraiz, &ptnovo, ptatual, ptpai, a);
+		//printf("Voltanda da recursão\n");
 		if (*a==1) { 
 			rotaRN(ptraiz, &ptnovo, ptatual, ptpai, ptavo, a);
 		} else if (*a==0) { 
 			*a = 1;
 		}
-	} else printf("Inserção Inválida");
+	} else return 1;//printf("Inserção Inválida");
+	return ret;
 }
 		
 		

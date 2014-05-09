@@ -9,6 +9,12 @@
 #include "arvores.h"
 #include "misc.h"
 
+int compara2(int *a, int *b) {
+	if (*a < *b) return -1;
+	else if (*a==*b) return 0;
+	else return 1;
+}
+
 int main() {
 	
 	FILE *file; // Declara dois arquivos
@@ -19,12 +25,15 @@ int main() {
 	nodo *arvore = NULL;
 	int alterado=0;
 	
+	char nome[20] = "lista.txt";
+	//char nome[20] = "listaordenada.txt";
+	
 	// Abre os arquivos, um para a leitura e outra para a escrita
-	if (! (file = fopen("lista.txt", "r")) ) {
+	if (! (file = fopen(nome, "r")) ) {
 		printf("Lista não encontrada!\nCriando lista...");
 		geralista(MAXLISTA);
 		printf("Ok\n");
-		file = fopen("lista.txt", "r");
+		file = fopen(nome, "r");
 	}
 	
 	// Leitura do arquivo no vetor
@@ -78,20 +87,20 @@ int main() {
 	
 	n = 0;
 	
-	nodo *raiz=NULL, *noatual, *nopai, *noavo;
+	nodo *raiz, *noatual, *nopai, *noavo;
 	alterado = 0;
+	raiz = NULL;
 	
 	for (i=0; i<MAXLISTA; i++) {
 		noatual = NULL;
 		nopai = NULL;
 		noavo = NULL;
 		
-		insereRN(a[i], &raiz, &raiz, &nopai, &noavo, &alterado);
-		n++;
-		printf("%d\n", n);
+		if (insereRN(a[i], &raiz, &raiz, &nopai, &noavo, &alterado) == 0) n++;
+		//printf("%d\n", n);
 	}
 	
-	printf("%d\n", n);
+	//printf("%d\n", n);
 		
 	
 	ct_f = clock();
@@ -110,6 +119,54 @@ int main() {
 	
 	// Escreve a diferença da tela
 	printf("Levou %lf segundos para operar a árvore balanceada com %d elementos.\n", ((float)(ct_f - ct_i) / CLOCKS_PER_SEC), n);
+	
+	printf("Ordenando lista...\n");
+	
+	qsort(a, MAXLISTA, sizeof(int),compara2);
+	
+	printf("%d %d", a[30], a[31]);
+	
+	printf("Começando a criar nova árvore...\n");
+		
+	ct_i = clock();
+	
+	n = 0;
+	
+	//Zerando árvore
+	nodo *raiz2; 
+	alterado = 0;
+	
+	raiz2 = NULL;
+	
+	for (i=0; i<MAXLISTA; i++) {
+		noatual = NULL;
+		nopai = NULL;
+		noavo = NULL;
+		
+		if (insereRN(a[i], &raiz2, &raiz2, &nopai, &noavo, &alterado) == 0) n++;
+		//printf("%d\n", n);
+	}
+	
+	//printf("%d\n", n);
+		
+	
+	ct_f = clock();
+	// Tempo depois da operação
+
+	
+	printf("Árvore binária balanceada com lista ordenada construída!\n");
+	
+	//simet(arvore);
+	
+	calculaalturas(raiz);
+	
+	//simet(arvore);
+	
+	printf("A altura da árvore balanceada é %d \n", raiz->altura);
+	
+	// Escreve a diferença da tela
+	printf("Levou %lf segundos para operar a árvore balanceada com %d elementos.\n", ((float)(ct_f - ct_i) / CLOCKS_PER_SEC), n);
+		
 	// Fecha os arquivos
 	fclose(file);
 	
