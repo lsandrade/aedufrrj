@@ -246,25 +246,30 @@ void rotaRN(nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, nodo **pt
 	nodo *ptaux, *pttio;
 	
 	*a = 2;
-	
+	//printf("Dentro da rotação\n");
 	if ((*ptpai)->balanco == 0) {
+		//printf("Checou pai\n");
 		if (*ptpai == (*ptavo)->esq) {
 			pttio = (*ptavo)->dir;
 		} else pttio = (*ptavo)->esq;
-		if (pttio->balanco == 0) { // Caso 2.1
+		//printf("Checou avô e recuperou tio\n");
+		if (pttio != NULL && pttio->balanco == 0) { // Caso 2.1
+			//printf("Caso simples\n");
 			(*ptpai)->balanco = 1;
 			(*ptavo)->balanco = 0;
 			pttio->balanco = 1;
 			*a = 0;
 		} else { // Caso 2.2
-			(*ptavo)->balanco = 1;
-			if (*ptatual == (*ptavo)->esq) {
+			(*ptavo)->balanco = 0;  // Aqui está o erro (=1)
+			if (*ptatual == (*ptpai)->esq) {
 				if (*ptpai == (*ptavo)->esq) { // Caso 2.2.1
+					//printf("Rotação direita\n");
 					ptaux = *ptpai;
 					(*ptpai)->balanco = 1;
 					(*ptavo)->esq = (*ptpai)->dir;
 					(*ptpai)->dir = *ptavo;
 				} else { //Caso 2.2.2
+					//printf("Rotação dupla esquerda\n");
 					ptaux = *ptatual;
 					(*ptatual)->balanco = 1;
 					(*ptavo)->dir = (*ptatual)->esq;
@@ -274,11 +279,14 @@ void rotaRN(nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, nodo **pt
 				} 
 			} else {
 				if (*ptpai == (*ptavo)->dir) { // Caso 2.2.3
+					//printf("Rotação esquerda\n");
 					ptaux = *ptpai;
 					(*ptpai)->balanco = 1;
 					(*ptavo)->dir = (*ptpai)->esq;
 					(*ptpai)->esq = *ptavo;
+					//printf("Fim da rotação esquerda\n");
 				} else { //Caso 2.2.4
+					//printf("Rotação dupla direita\n");
 					ptaux = *ptatual;
 					(*ptatual)->balanco = 1;
 					(*ptavo)->esq = (*ptatual)->dir;
@@ -287,7 +295,7 @@ void rotaRN(nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, nodo **pt
 					(*ptatual)->esq = *ptpai;
 				} 
 			}
-			if (*ptbisavo == NULL) {
+			if (*ptbisavo != NULL) {
 				if ((*ptatual)->chave < (*ptbisavo)->chave) {
 					(*ptbisavo)->esq = ptaux;
 				} else (*ptbisavo)->dir = ptaux;
@@ -295,6 +303,7 @@ void rotaRN(nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, nodo **pt
 		}
 	}
 	(*ptraiz)->balanco = 1;
+	//printf("Saindo da rotação\n");
 }
 
 
@@ -324,10 +333,11 @@ int insereRN(int x, nodo **ptraiz, nodo **ptatual, nodo **ptpai, nodo **ptavo, i
 		}
 		//printf("Recursão\n");
 		ret = insereRN(x, ptraiz, &ptnovo, ptatual, ptpai, a);
-		//printf("Voltanda da recursão\n");
-		if (*a==1) {  //O valor 1 é referente ao balanço da árvore (1 desbalanceada e 0 balanceada)
+		//printf("Voltando da recursão\n");
+		if (*a == 1) {  //O valor 1 é referente ao balanço da árvore (1 desbalanceada e 0 balanceada)
+			//printf("Rotacionando\n");
 			rotaRN(ptraiz, &ptnovo, ptatual, ptpai, ptavo, a);
-		} else if (*a==0) { 
+		} else if (*a == 0) { 
 			*a = 1;
 		}
 	} else return 1;//printf("Inserção Inválida");
