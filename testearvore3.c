@@ -49,7 +49,7 @@ int main() {
 	
 	ptaux = arvore;
 	
-	for (i=0; i<MAXLISTA; i++) {
+	for (i=0; i<(MAXLISTA); i++) {
 		ptaux = arvore;
 		if (buscabinaria(a[i], &ptaux) != 1) {
 			inserenodo(a[i], &arvore);
@@ -80,7 +80,7 @@ int main() {
 	// Escreve a diferença da tela
 	printf("Levou %lf segundos para operar a árvore com %d elementos.\n", ((float)(ct_f - ct_i) / CLOCKS_PER_SEC), n);
 		
-	printf("Começando a criar...\n");
+	printf("Começando a criar árvore balanceada...\n");
 		
 	
 	ct_i = clock();
@@ -88,17 +88,19 @@ int main() {
 	n = 0;
 	
 	nodo *raiz, *noatual, *nopai, *noavo;
-	
+
 	raiz = NULL;
-	alterado = 1;
 	
 	for (i=0; i<MAXLISTA; i++) {
 		noatual = NULL;
 		nopai = NULL;
 		noavo = NULL;
+		alterado = 1;
 		
-		if (insereRN(a[i], &raiz, &raiz, &nopai, &noavo, &alterado) == 0) n++;
-		//printf("%d\n", n);
+		if (insereRN(a[i], &raiz, &raiz, &nopai, &noavo, &alterado) == 0) {
+			n++;
+			//printf("%d\n", n);
+		}
 	}
 	
 	//printf("%d\n", n);
@@ -125,8 +127,6 @@ int main() {
 	
 	qsort(a, MAXLISTA, sizeof(int),compara2);
 	
-	printf("%d %d", a[30], a[31]);
-	
 	printf("Começando a criar nova árvore...\n");
 		
 	ct_i = clock();
@@ -135,18 +135,19 @@ int main() {
 	
 	//Zerando árvore
 	nodo *raiz2; 
-	alterado = 1;
 	
 	raiz2 = NULL;
 	
-	for (i=0; i<MAXLISTA; i++) {
+	for (i=0; i<(MAXLISTA); i++) {
 		noatual = NULL;
 		nopai = NULL;
 		noavo = NULL;
 		alterado = 1;
 		
-		if (insereRN(a[i], &raiz2, &raiz2, &nopai, &noavo, &alterado) == 0) n++;
-		//printf("%d\n", n);
+		if (insereRN(a[i], &raiz2, &raiz2, &nopai, &noavo, &alterado) == 0) {
+			n++;
+			//printf("%d\n", n);
+		}
 	}
 	
 	//printf("%d\n", n);
@@ -160,11 +161,11 @@ int main() {
 	
 	//simet(arvore);
 	
-	calculaalturas(raiz);
+	calculaalturas(raiz2);
 	
 	//simet(arvore);
 	
-	printf("A altura da árvore balanceada é %d \n", raiz->altura);
+	printf("A altura da árvore balanceada com lista ordenada é %d \n", raiz2->altura);
 	
 	// Escreve a diferença da tela
 	printf("Levou %lf segundos para operar a árvore balanceada com %d elementos.\n", ((float)(ct_f - ct_i) / CLOCKS_PER_SEC), n);
