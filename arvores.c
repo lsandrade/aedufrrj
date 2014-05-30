@@ -129,6 +129,110 @@ int inserenodo(int x, nodo **ptraiz) {
 	return 1;
 }
 
+
+
+//função que remove nó de uma árvore binária
+void Removenodo(nodo *pt,int x){
+	//ponteiros auxiliares
+	nodo *pt1, *pt2;
+	//ou a árvore está vazia ou foi procurando por todos os nós e não encontrou
+	if(pt==NULL) printf("No nao encontrado.\n");
+	//se o pt não for NULL, faz a busca.
+	else{
+		//se encontrou o elemento agora logo de cara, começamos a remoção
+		if(pt->chave==x){
+			//se o nó é folha, ótimo! Remova-o.
+			if(pt->esq==pt->dir){
+				free(pt);
+				pt=NULL;
+			}
+			else{
+				//Se o nó a ser removido tem filho direito, mas não esquerdo. Ex:
+				//		...
+				//        [X]
+				//           \
+				//	     [Y]
+				// Nesse caso removemos o X e subimos com a subarvore direita
+				if(pt->esq==NULL){
+					pt1=pt;
+					pt=pt->dir;
+					free(pt1);
+				}
+				else{
+					//Se nó removido tem filho esq mas nao filho dir. Ex
+					//		...
+					//        [X]
+					//        /
+					//     [Y]
+					// Nesse caso removemos o X e subimos com a subarvore esquerda
+					if(pt->dir==NULL){
+						pt1=pt;
+						pt=pt->esq;
+						free(pt1);
+					}
+					else{
+						//Se não estiver nos casos anteriores, o nó tem 2 subárvores.
+						//Ex:		       ...
+						//			[X]
+						//		       /   \
+						//                   [Y]  [Z]
+						//	         ...      ...
+						// Nesse caso, temos 2 alternativas:
+						// a) pegar o MAIOR nó MENOR que o que queremos remover;
+						// b) pegar o MENOR nó MAIOR do que o que queremos remover.
+						// Esse algoritmo implementa a alternativa (A):
+						// 1- Visitamos a subárvore esquerda e procuramos o nó que estiver mais a direita.
+						// 2- Esse nó fica no lugar do que queremos remover
+						// 3- Seu filho esquerdo ocupa sua posição
+						// 4- Removemos o danadinho.
+						pt1=pt;
+						pt2=pt->esq; // <- subarvore esquerda
+						while(pt2->dir!=NULL){ // <- pega o cara que estiver mais a direita
+							pt1=pt2;
+							pt2=pt2->dir;
+						}
+						pt->chave=pt2->chave; // <- Poe esse nó no lugar do X
+						pt1->dir= pt2->esq; // <- Sobe com o filho esquerdo do cidadão.
+						free(pt2);			// <- removemos filho do maior menor.
+						/*Vou fazer um desenho:
+						 *          ...
+						 *          ____[12]_______
+						 *      _[7]__ 	 	 _[15]
+						 *   [5]     [8]_    [19]   ...
+						 *     ...    _[10]
+						 *          [9]
+						 * Queremos remover o 7. (supondo que já fizemos toda a busca e chegamos no nó 7)
+						 * 1- Busca o maior menor (no caso, 10)
+						 * 2- 10 substitui o 7
+						 * 3- 9 fica no lugar onde tava o 10.
+						 * 4- Removemos o nó onde estava o 9.
+						 * 
+						 * Resultado:
+						 * ...
+						 *          _____[12]______
+						 *      _[10]__         _[15]
+						 *    [5]     [8]_    [19]   ...
+						 *     ...       [9]
+						 * 
+						 * FIM.
+						 * 
+						 * */
+					}
+				}
+			}
+			printf("Removido com sucesso.\n");
+		}
+		//se ainda não encontrou, testamos se o valor procurado é maior ou menor que a chave atual para procurar na direita ou esquerda da nossa árvore.
+		else{
+			//se x<chave, procura na subarvore esquerda
+			if(pt->chave>x)	Remover(pt->esq,x);
+			//senão procura na subarvore direita
+			else	Remover(pt->dir,x);
+		}
+	}
+}
+
+
 void iniciano(int x, nodo **pt) {
 	nodo *ptnovo;
 	
