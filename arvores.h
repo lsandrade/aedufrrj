@@ -32,6 +32,8 @@ void calculaalturas(nodo *pt);
 
 int inserenodo(int x, nodo **ptraiz);
 
+void Removenodo(nodo *pt,int x);
+
 void iniciano(int x, nodo **pt);
 
 void caso1(nodo **pt, int *alterado);
